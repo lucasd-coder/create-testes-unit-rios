@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { CreateStatementController } from '../modules/statements/useCases/createStatement/CreateStatementController';
-import { GetBalanceController } from '../modules/statements/useCases/getBalance/GetBalanceController';
-import { GetStatementOperationController } from '../modules/statements/useCases/getStatementOperation/GetStatementOperationController';
-import { ensureAuthenticated } from '../shared/infra/http/middlwares/ensureAuthenticated';
+import { CreateStatementController } from '@modules/statements/useCases/createStatement/CreateStatementController';
+import { GetBalanceController } from '@modules/statements/useCases/getBalance/GetBalanceController';
+import { GetStatementOperationController } from '@modules/statements/useCases/getStatementOperation/GetStatementOperationController';
+import { ensureAuthenticated } from '@shared/infra/http/middlwares/ensureAuthenticated';
 
 const statementRouter = Router();
 const getBalanceController = new GetBalanceController();

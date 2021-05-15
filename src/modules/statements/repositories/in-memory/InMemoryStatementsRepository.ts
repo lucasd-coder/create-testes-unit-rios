@@ -1,7 +1,7 @@
-import { Statement } from "../../entities/Statement";
-import { ICreateStatementDTO } from "../../useCases/createStatement/ICreateStatementDTO";
-import { IGetBalanceDTO } from "../../useCases/getBalance/IGetBalanceDTO";
-import { IGetStatementOperationDTO } from "../../useCases/getStatementOperation/IGetStatementOperationDTO";
+import { Statement } from "@modules/statements/entities/Statement";
+import { ICreateStatementDTO } from "@modules/statements/useCases/createStatement/ICreateStatementDTO";
+import { IGetBalanceDTO } from "@modules/statements/useCases/getBalance/IGetBalanceDTO";
+import { IGetStatementOperationDTO } from "@modules/statements/useCases/getStatementOperation/IGetStatementOperationDTO";
 import { IStatementsRepository } from "../IStatementsRepository";
 
 export class InMemoryStatementsRepository implements IStatementsRepository {

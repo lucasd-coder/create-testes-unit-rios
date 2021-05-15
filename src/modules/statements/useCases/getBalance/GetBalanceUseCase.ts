@@ -1,8 +1,8 @@
+import { Statement } from "@modules/statements/entities/Statement";
+import { IStatementsRepository } from "@modules/statements/repositories/IStatementsRepository";
+import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { inject, injectable } from "tsyringe";
 
-import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
-import { Statement } from "../../entities/Statement";
-import { IStatementsRepository } from "../../repositories/IStatementsRepository";
 import { GetBalanceError } from "./GetBalanceError";
 
 interface IRequest {

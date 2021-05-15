@@ -1,7 +1,7 @@
+import { IStatementsRepository } from "@modules/statements/repositories/IStatementsRepository";
+import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { inject, injectable } from "tsyringe";
 
-import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
-import { IStatementsRepository } from "../../repositories/IStatementsRepository";
 import { GetStatementOperationError } from "./GetStatementOperationError";
 
 interface IRequest {

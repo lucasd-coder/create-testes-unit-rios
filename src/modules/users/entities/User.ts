@@ -7,7 +7,9 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-import { Statement } from '../../statements/entities/Statement';
+import { Statement } from '@modules/statements/entities/Statement';
+
+
 
 @Entity('users')
 export class User {
