@@ -1,11 +1,31 @@
-import { Statement } from "@modules/statements/entities/Statement";
-import { ICreateStatementDTO } from "@modules/statements/useCases/createStatement/ICreateStatementDTO";
-import { IGetBalanceDTO } from "@modules/statements/useCases/getBalance/IGetBalanceDTO";
-import { IGetStatementOperationDTO } from "@modules/statements/useCases/getStatementOperation/IGetStatementOperationDTO";
+import { User } from "../../../users/entities/User";
+import { Statement } from "../../entities/Statement";
+import { Transfer } from "../../entities/Transfer";
+import { ICreateStatementDTO } from "../../useCases/createStatement/ICreateStatementDTO";
+import { IGetBalanceDTO } from "../../useCases/getBalance/IGetBalanceDTO";
+import { IGetStatementOperationDTO } from "../../useCases/getStatementOperation/IGetStatementOperationDTO";
 import { IStatementsRepository } from "../IStatementsRepository";
+import { InMemoryTransferRepository } from "./inMemoryTransferRepository";
+
+interface IStatementDTO {
+  id?: string;
+  user_id: string;
+  user: User;
+  description: string;
+  amount: number;
+  transfer_id?: string;
+  transfer: Transfer | undefined;
+  type: any;
+  created_at: Date;
+  updated_at: Date;
+}
 
 export class InMemoryStatementsRepository implements IStatementsRepository {
   private statements: Statement[] = [];
+
+  constructor(
+    private transfersRepository: InMemoryTransferRepository
+  ){}
 
   async create(data: ICreateStatementDTO): Promise<Statement> {
     const statement = new Statement();
@@ -24,12 +44,10 @@ export class InMemoryStatementsRepository implements IStatementsRepository {
     ));
   }
 
-  async getUserBalance({ user_id, with_statement = false }: IGetBalanceDTO):
-    Promise<
-      { balance: number } | { balance: number, statement: Statement[] }
-    >
+  async getUserBalance({ user_id }: IGetBalanceDTO):
+    Promise<{ balance: number, statement: IStatementDTO[] }>
   {
-    const statement = this.statements.filter(operation => operation.user_id === user_id);
+    const statement = this.statements.filter(operation => operation.user_id === user_id) as IStatementDTO[];
 
     const balance = statement.reduce((acc, operation) => {
       if (operation.type === 'deposit') {
@@ -39,13 +57,15 @@ export class InMemoryStatementsRepository implements IStatementsRepository {
       }
     }, 0)
 
-    if (with_statement) {
-      return {
-        statement,
-        balance
-      }
-    }
+    const transfers = await this.transfersRepository.getTransfers()
+    const statements = statement.map(statement => {
+      statement.transfer = transfers.find(transfer => transfer.transfer_id === statement.transfer_id)
+      return statement
+    })
 
-    return { balance }
+    return {
+      statement: statements,
+      balance
+    }
   }
 }

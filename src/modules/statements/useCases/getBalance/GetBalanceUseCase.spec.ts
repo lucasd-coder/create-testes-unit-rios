@@ -1,4 +1,5 @@
 import { InMemoryStatementsRepository } from "@modules/statements/repositories/in-memory/InMemoryStatementsRepository";
+import { InMemoryTransferRepository } from "@modules/statements/repositories/in-memory/inMemoryTransferRepository";
 import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/InMemoryUsersRepository";
 import { AuthenticateUserUseCase } from "@modules/users/useCases/authenticateUser/AuthenticateUserUseCase";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
@@ -14,6 +15,7 @@ let authenticationUserUseCase: AuthenticateUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 let createStatementUseCase: CreateStatementUseCase;
 let getBalanceUseCase: GetBalanceUseCase;
+let transfersRepositoryInMemory: InMemoryTransferRepository
 
 enum OperationType {
   DEPOSIT = 'deposit',
@@ -23,7 +25,8 @@ enum OperationType {
 describe('Get user balance', () => {
 
   beforeEach(() => {
-    statementsRepositoryInMemory = new InMemoryStatementsRepository();
+    transfersRepositoryInMemory = new InMemoryTransferRepository();
+    statementsRepositoryInMemory = new InMemoryStatementsRepository(transfersRepositoryInMemory);
     usersRepsositoryInMemory = new InMemoryUsersRepository();
     createStatementUseCase = new CreateStatementUseCase(usersRepsositoryInMemory ,statementsRepositoryInMemory);
 

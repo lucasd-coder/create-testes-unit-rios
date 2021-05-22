@@ -1,4 +1,5 @@
 import { InMemoryStatementsRepository } from "@modules/statements/repositories/in-memory/InMemoryStatementsRepository";
+import { InMemoryTransferRepository } from "@modules/statements/repositories/in-memory/inMemoryTransferRepository";
 import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/InMemoryUsersRepository";
 import { AuthenticateUserUseCase } from "@modules/users/useCases/authenticateUser/AuthenticateUserUseCase";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
@@ -10,6 +11,7 @@ import { ICreateStatementDTO } from "./ICreateStatementDTO";
 let statementsRepositoryInMemory: InMemoryStatementsRepository;
 let createStatementUseCase: CreateStatementUseCase;
 let usersRepsositoryInMemory: InMemoryUsersRepository;
+let transfersRepositoryInMemory: InMemoryTransferRepository
 
 let authenticationUserUseCase: AuthenticateUserUseCase;
 let createUserUseCase: CreateUserUseCase;
@@ -21,7 +23,8 @@ enum OperationType {
 
 describe('Create Statement', () => {
   beforeEach(() =>{
-    statementsRepositoryInMemory = new InMemoryStatementsRepository();
+    transfersRepositoryInMemory = new InMemoryTransferRepository();
+    statementsRepositoryInMemory = new InMemoryStatementsRepository(transfersRepositoryInMemory);
     usersRepsositoryInMemory = new InMemoryUsersRepository();
     createStatementUseCase = new CreateStatementUseCase(usersRepsositoryInMemory ,statementsRepositoryInMemory);
 

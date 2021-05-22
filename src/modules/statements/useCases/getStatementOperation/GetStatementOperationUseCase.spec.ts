@@ -1,4 +1,5 @@
 import { InMemoryStatementsRepository } from "@modules/statements/repositories/in-memory/InMemoryStatementsRepository";
+import { InMemoryTransferRepository } from "@modules/statements/repositories/in-memory/inMemoryTransferRepository";
 import { InMemoryUsersRepository } from "@modules/users/repositories/in-memory/InMemoryUsersRepository";
 import { AuthenticateUserUseCase } from "@modules/users/useCases/authenticateUser/AuthenticateUserUseCase";
 import { CreateUserUseCase } from "@modules/users/useCases/createUser/CreateUserUseCase";
@@ -11,6 +12,7 @@ let usersRepsositoryInMemory: InMemoryUsersRepository;
 let authenticationUserUseCase: AuthenticateUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 let getStatementOperation: GetStatementOperationUseCase;
+let transfersRepositoryInMemory: InMemoryTransferRepository
 
 enum OperationType {
   DEPOSIT = 'deposit',
@@ -20,7 +22,8 @@ enum OperationType {
 describe('list a statement', () => {
 
   beforeEach(() => {
-    statementsRepositoryInMemory = new InMemoryStatementsRepository();
+    transfersRepositoryInMemory = new InMemoryTransferRepository();
+    statementsRepositoryInMemory = new InMemoryStatementsRepository(transfersRepositoryInMemory);
     usersRepsositoryInMemory = new InMemoryUsersRepository();
     createUserUseCase = new CreateUserUseCase(usersRepsositoryInMemory);
     authenticationUserUseCase = new AuthenticateUserUseCase(usersRepsositoryInMemory);
